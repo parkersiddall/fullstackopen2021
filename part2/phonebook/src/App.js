@@ -1,57 +1,8 @@
 import React, { useState } from 'react'
-
-const AllPeople = (props) => {
-  return (
-    <div>
-      {props.persons.map(person => 
-        <p key={person.name}>{person.name} : {person.number}</p>
-      )}
-    </div>
-  )
-}
-
-const FilteredPeople = (props) => {
-  return (
-    <div>
-      {props.filtered.map(person =>
-        <p key={person.name}>{person.name} : {person.number}</p>
-      )}
-    </div>
-  )
-}
-
-const InputForm = (props) => {
-  return (
-  <form onSubmit={props.onSub}>
-    <div>
-      name: <input 
-        value={props.nameValue} 
-        onChange={props.nameChange}
-        />
-    </div>
-    <div>
-      number: <input 
-        value={props.numberValue} 
-        onChange={props.numberChange}
-        />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
-  )
-}
-
-const FilterForm = (props) => {
-  return (
-    <div>
-      filter: <input 
-        value={props.value} 
-        onChange={props.onChange}
-        />
-    </div>
-  )
-}
+import AllPeople from './components/AllPeople'
+import FilteredPeople from './components/FilteredPeople'
+import FilterForm from './components/FilterForm'
+import InputForm from './components/InputForm'
 
 const App = () => {
 
