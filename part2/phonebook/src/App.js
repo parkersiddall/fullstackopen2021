@@ -38,7 +38,7 @@ const App = () => {
 
     var isUnique = true
     persons.forEach((person) => {
-      if (newName === person.name){
+      if (newName.toLowerCase() === person.name.toLowerCase()){
         isUnique = false
         //get the id of the person
         nameObject.id = person.id
