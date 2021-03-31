@@ -3,8 +3,11 @@ import React from 'react'
 const FilteredPeople = (props) => {
     return (
       <div>
-        {props.filtered.map(person =>
-          <p key={person.name}>{person.name} : {person.number}</p>
+        {props.filtered.map(person => 
+          <div key={person.name}>
+            <span>{person.name} : {person.number}</span>
+            <button onClick={props.onclick()} value={JSON.stringify(person)}>Delete</button>
+          </div>
         )}
       </div>
     )

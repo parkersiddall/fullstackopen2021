@@ -4,6 +4,7 @@ import AllPeople from './components/AllPeople'
 import FilteredPeople from './components/FilteredPeople'
 import FilterForm from './components/FilterForm'
 import InputForm from './components/InputForm'
+import personsService from './services/persons'
 
 const App = () => {
 
@@ -15,16 +16,12 @@ const App = () => {
 
   //effects
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'notes')
-
 
   const filterNames = persons.filter((person) => {
     return person.name.toLowerCase().includes(filter.toLowerCase())
@@ -42,17 +39,46 @@ const App = () => {
     var isUnique = true
     persons.forEach((person) => {
       if (newName === person.name){
-        window.alert(`${newName} is already listed`)
-        setNewName('')
-        setNewNumber('')
         isUnique = false
+        //get the id of the person
+        nameObject.id = person.id
       }
     })
 
     if (isUnique) {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      personsService
+      .addToDB(nameObject)
+      .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+      })
+    } else {
+      if(window.confirm(`${newName} is already listed. Update number?`)){
+        personsService
+        .updateDB(nameObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== response.data.id ? person : response.data))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+    }
+  }
+
+  const deletePerson = (event) => {
+    let deletePerson = JSON.parse(event.target.value)
+    if (window.confirm(`Do you wish to delete ${deletePerson.name}?`)){
+      personsService
+      .deleteFromDB(deletePerson.id)
+      .then(response => {
+        var newPersons = persons.filter(person => person.id !== deletePerson.id)
+        setPersons(newPersons)
+      })
+      .catch(error => {
+        console.log(error)
+        window.alert(`Could not delete ${deletePerson.name}. Refresh the page and try again.`)
+      })
     }
   }
 
@@ -88,6 +114,7 @@ const App = () => {
       <h2>Filtered results</h2>
       <FilteredPeople 
         filtered={filterNames}
+        onclick={() => deletePerson}
       />
       <h2>All Numbers</h2>
       <AllPeople 
