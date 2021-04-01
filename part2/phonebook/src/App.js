@@ -5,6 +5,7 @@ import FilteredPeople from './components/FilteredPeople'
 import FilterForm from './components/FilterForm'
 import InputForm from './components/InputForm'
 import personsService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
 
@@ -13,6 +14,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('Insert a name...')
   const [ newNumber, setNewNumber ] = useState('555-555-5555')
   const [ filter, setFilter ] = useState('')
+  const [ notif, setNotif ] = useState(null)
 
   //effects
   useEffect(() => {
@@ -52,6 +54,14 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+          setNotif(
+            {
+              message: 'Person added successfully!',
+              style: 'successMessage'
+            })
+          setTimeout(() => {
+            setNotif(null)
+          }, 5000)
       })
     } else {
       if(window.confirm(`${newName} is already listed. Update number?`)){
@@ -61,6 +71,14 @@ const App = () => {
           setPersons(persons.map(person => person.id !== response.data.id ? person : response.data))
           setNewName('')
           setNewNumber('')
+          setNotif(
+            {
+              message: 'Person modified successfully!',
+              style: 'successMessage'
+            })
+          setTimeout(() => {
+            setNotif(null)
+          }, 5000)
         })
       }
     }
@@ -74,10 +92,25 @@ const App = () => {
       .then(response => {
         var newPersons = persons.filter(person => person.id !== deletePerson.id)
         setPersons(newPersons)
+        setNotif(
+          {
+            message: 'Person deleted successfully!',
+            style: 'successMessage'
+          })
+        setTimeout(() => {
+          setNotif(null)
+        }, 5000)
       })
       .catch(error => {
-        console.log(error)
-        window.alert(`Could not delete ${deletePerson.name}. Refresh the page and try again.`)
+        setNotif(
+          {
+            message: 'Person has already been deleted from the server. Updating list...',
+            style: 'errorMessage'
+          })
+        setTimeout(() => {
+          setNotif(null)
+        }, 5000)
+        setPersons(persons.filter(person => person.id !== deletePerson.id))
       })
     }
   }
@@ -99,6 +132,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notif}/>
       <FilterForm 
         value={filter}
         onChange={handleFilter}
