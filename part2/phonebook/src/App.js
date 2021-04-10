@@ -7,6 +7,8 @@ import InputForm from './components/InputForm'
 import personsService from './services/persons'
 import Notification from './components/Notification'
 
+const baseURL = '/api/persons'
+
 const App = () => {
 
   // states
@@ -19,7 +21,7 @@ const App = () => {
   //effects
   useEffect(() => {
     axios
-      .get('http://localhost:3001/persons')
+      .get(baseURL)
       .then(response => {
         setPersons(response.data)
       })
@@ -62,6 +64,14 @@ const App = () => {
           setTimeout(() => {
             setNotif(null)
           }, 5000)
+      })
+      .catch(error => {
+        console.log(error.response.data.message)
+        setNotif(
+          {
+            message: error.response.data.message,
+            style: 'errorMessage'
+          })
       })
     } else {
       if(window.confirm(`${newName} is already listed. Update number?`)){
@@ -145,14 +155,10 @@ const App = () => {
         numberChange={handleNewNumber}
       />
       
-      <h2>Filtered results</h2>
+      <h2>Search Results</h2>
       <FilteredPeople 
         filtered={filterNames}
         onclick={() => deletePerson}
-      />
-      <h2>All Numbers</h2>
-      <AllPeople 
-        persons={persons}
       />
     </div>
   )
