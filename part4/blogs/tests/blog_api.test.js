@@ -106,6 +106,31 @@ test('missing url and title return bad request', async () => {
     .expect(400)
 })
 
+test('delete blog', async () => {
+    const response = await api.get('/api/blogs')
+
+    await api
+    .delete(`/api/blogs/${response.body[0].id}`)
+    .expect(204)
+})
+
+test('update post, primarily for changing likes', async () => {
+    const response = await api.get('/api/blogs')
+    const blogId = response.body[0].id
+    await api
+    .put(`/api/blogs/${blogId}`)
+    .send({
+        title: "More likes",
+        author: "test",
+        url: "www.google.com",
+        likes: 100
+    })
+    .expect(200)
+
+    const checkChange = await api.get('/api/blogs')
+    expect(checkChange.body[0].likes).toBe(100)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
