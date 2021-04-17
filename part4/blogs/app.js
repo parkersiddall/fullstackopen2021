@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 
 logger.info('connecting to', config.MONGO_URL)
 
-const mongoUrl = process.env.MONGO_URL
+const mongoUrl = config.MONGO_URL
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
 app.use(cors())
