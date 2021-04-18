@@ -23,21 +23,16 @@ usersRouter.post('/', async (request, response) => {
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
     // username validation is done with mongoose. This block returns errors if necessary.
-    try {
-        const user = new User({
-            username: body.username,
-            name: body.name,
-            passwordHash
-        })
 
-        const savedUser = await user.save()  // this is giving me a strange message in jest
-        response.json(savedUser)
-    }
-    catch (e) {
-        response.status(400).send({
-            message: e.message
-        })
-    }
+    const user = new User({
+        username: body.username,
+        name: body.name,
+        passwordHash
+    })
+
+    const savedUser = await user.save()  // add to error handling
+    response.json(savedUser)
+
 })
 
 usersRouter.get('/', async (request, response) => {
