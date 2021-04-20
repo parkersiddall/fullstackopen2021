@@ -23,7 +23,6 @@ usersRouter.post('/', async (request, response) => {
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
     // username validation is done with mongoose. This block returns errors if necessary.
-
     const user = new User({
         username: body.username,
         name: body.name,
