@@ -2,6 +2,7 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const middleware = require('../utils/middleware')
 
 
 blogsRouter.get('/', async (request, response) => {
@@ -9,7 +10,7 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.extractToken, middleware.extractUser, async (request, response) => {
   const body = request.body
 
   if (body.title === undefined || body.url === undefined) {
@@ -37,7 +38,7 @@ blogsRouter.post('/', async (request, response) => {
   response.json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', middleware.extractToken, middleware.extractUser, async (request, response) => {
   const body = request.body
 
   const blogToDelete = await Blog.findById(request.params.id)
@@ -52,7 +53,7 @@ blogsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', middleware.extractToken, middleware.extractUser, async (request, response) => {
   const body = request.body
   
   if(body.likes === undefined) {
