@@ -3,6 +3,9 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import NewBlogForm from './components/NewBlogForm'
+import Toggle from './components/Toggle'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,7 +15,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [ notif, setNotif ] = useState(null)
+  const [notif, setNotif] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -54,7 +57,6 @@ const App = () => {
     }
   }
 
-  //logout handler
   const handleLogout = () => {
     console.log('You are now logged out.')
     window.localStorage.removeItem('loggedBlogappUser')
@@ -94,32 +96,25 @@ const App = () => {
         }, 5000)
       }
   }
+                        
 
   if (user === null) {
     return (
       <div>
         <Notification notification={notif}/>
-        <h2>blogs</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-              <input type='text' 
-              value={username} 
-              name='username' 
-              onChange={({target}) => setUsername(target.value)}
-              />
-          </div>
-          <div>
-            password
-            <input
-            type='password'
-            value={password}
-            name='password'
-            onChange = {({target}) => setPassword(target.value)} 
+        <h2>blogs</h2> 
+        <Toggle buttonLabel='login'>
+          <LoginForm
+              username={username}
+              password={password}
+              handleUsernameChange={({target}) => setUsername(target.value)}
+              handlePasswordChange={({target}) => setPassword(target.value)}
+              handleLogin={handleLogin}
+              title={title}
+              author={author}
+              url={url}
             />
-          </div>
-          <button type='submit'>Login</button>
-        </form>
+        </Toggle>
       </div>
     )
   }
@@ -127,44 +122,24 @@ const App = () => {
   return (
     <div>
       <Notification notification={notif}/>
+      <h2>blogs</h2> 
       <b>
-        You are logged in as {user.username}
+          You are logged in as {user.username}
       </b>
+      <Toggle buttonLabel='add blog'>
+        <NewBlogForm
+          handleNewPost={handleNewPost}
+          handleTitle={({target}) => setTitle(target.value)}
+          handleAuthor={({target}) => setAuthor(target.value)}
+          handleUrl={({target}) => setUrl(target.value)}
+        />
+      </Toggle>
       <button onClick={handleLogout}>Logout</button>
-      <h2>blogs</h2>  
-      <form onSubmit={handleNewPost}>
-        <div>
-          title
-            <input type='text' 
-            value={title} 
-            name='title' 
-            onChange={({target}) => setTitle(target.value)}
-            />
-        </div>
-        <div>
-          author
-          <input
-          type='text'
-          value={author}
-          name='author'
-          onChange = {({target}) => setAuthor(target.value)} 
-          />
-        </div>
-        <div>
-          url
-          <input
-          type='url'
-          value={url}
-          name='url'
-          onChange = {({target}) => setUrl(target.value)} 
-          />
-        </div>
-        <button type='submit'>Add post</button>
-      </form>
       {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} />
       )}
     </div>
+
   )
 }
 
