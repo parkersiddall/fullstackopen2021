@@ -12,9 +12,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notif, setNotif] = useState(null)
 
   useEffect(() => {
@@ -63,20 +60,10 @@ const App = () => {
     setUser(null)
   }
 
-  const handleNewPost = async (event) => {
-    event.preventDefault()
-
-    const newBlog = {
-      title: title, 
-      author: author, 
-      url: url
-    }
+  const sendNewBlog = async (blogObject) => {
 
     try {
-      const user = await blogService.addPost(newBlog)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+      const user = await blogService.addPost(blogObject)
       setNotif(
         {
           message: 'Blog added successfully!',
@@ -85,7 +72,7 @@ const App = () => {
       setTimeout(() => {
         setNotif(null)
       }, 5000)
-      } catch (exception) {
+    } catch (exception) {
         setNotif(
           {
             message: `Error adding blog! ${exception}`,
@@ -97,7 +84,6 @@ const App = () => {
       }
   }
                         
-
   if (user === null) {
     return (
       <div>
@@ -110,9 +96,6 @@ const App = () => {
               handleUsernameChange={({target}) => setUsername(target.value)}
               handlePasswordChange={({target}) => setPassword(target.value)}
               handleLogin={handleLogin}
-              title={title}
-              author={author}
-              url={url}
             />
         </Toggle>
       </div>
@@ -128,10 +111,7 @@ const App = () => {
       </b>
       <Toggle buttonLabel='add blog'>
         <NewBlogForm
-          handleNewPost={handleNewPost}
-          handleTitle={({target}) => setTitle(target.value)}
-          handleAuthor={({target}) => setAuthor(target.value)}
-          handleUrl={({target}) => setUrl(target.value)}
+          sendNewBlog={sendNewBlog}
         />
       </Toggle>
       <button onClick={handleLogout}>Logout</button>
