@@ -14,6 +14,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notif, setNotif] = useState(null)
 
+  const blogsSorted = blogs.sort((a, b) => {
+    return a.likes - b.likes;
+  });
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -61,7 +65,6 @@ const App = () => {
   }
 
   const sendNewBlog = async (blogObject) => {
-
     try {
       const user = await blogService.addPost(blogObject)
       setNotif(
@@ -115,8 +118,8 @@ const App = () => {
         />
       </Toggle>
       <button onClick={handleLogout}>Logout</button>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {blogsSorted.map(blog =>
+        <Blog key={blog.id} blog={blog} user={user.username} />
       )}
     </div>
 
