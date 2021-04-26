@@ -15,13 +15,13 @@ const App = () => {
   const [notif, setNotif] = useState(null)
 
   const blogsSorted = blogs.sort((a, b) => {
-    return a.likes - b.likes;
-  });
+    return a.likes - b.likes
+  })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -35,17 +35,16 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('Logging in with', username, password)
 
     try {
-    const user = await loginService.login({username, password})
-    window.localStorage.setItem(
-      'loggedBlogappUser', JSON.stringify(user)
-    ) 
-    blogService.setToken(user.token)
-    setUser(user)
-    setUsername('')
-    setPassword('')
+      const user = await loginService.login({ username, password })
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
     } catch (exception) {
       setNotif(
         {
@@ -66,6 +65,7 @@ const App = () => {
 
   const sendNewBlog = async (blogObject) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const user = await blogService.addPost(blogObject)
       setNotif(
         {
@@ -76,30 +76,30 @@ const App = () => {
         setNotif(null)
       }, 5000)
     } catch (exception) {
-        setNotif(
-          {
-            message: `Error adding blog! ${exception}`,
-            style: 'errorMessage'
-          })
-        setTimeout(() => {
-          setNotif(null)
-        }, 5000)
-      }
+      setNotif(
+        {
+          message: `Error adding blog! ${exception}`,
+          style: 'errorMessage'
+        })
+      setTimeout(() => {
+        setNotif(null)
+      }, 5000)
+    }
   }
-                        
+
   if (user === null) {
     return (
       <div>
         <Notification notification={notif}/>
-        <h2>blogs</h2> 
+        <h2>blogs</h2>
         <Toggle buttonLabel='login'>
           <LoginForm
-              username={username}
-              password={password}
-              handleUsernameChange={({target}) => setUsername(target.value)}
-              handlePasswordChange={({target}) => setPassword(target.value)}
-              handleLogin={handleLogin}
-            />
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleLogin={handleLogin}
+          />
         </Toggle>
       </div>
     )
@@ -108,7 +108,7 @@ const App = () => {
   return (
     <div>
       <Notification notification={notif}/>
-      <h2>blogs</h2> 
+      <h2>blogs</h2>
       <b>
           You are logged in as {user.username}
       </b>

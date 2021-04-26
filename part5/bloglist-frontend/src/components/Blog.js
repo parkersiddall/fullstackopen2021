@@ -1,17 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
 import DeleteButton from './DeleteButton'
 
 const Blog = (props) => {
 
   const [visible, setVisible] = useState(false)
-  const hideWhenVisible = {display: visible ? 'none' : ''}
-  const showWhenVisible = {display: visible ? '' : 'none'}
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
 
   const blog = props.blog
 
   const toggleVisibility = () => {
-      setVisible(!visible)
+    setVisible(!visible)
   }
 
   const blogStyle = {
@@ -25,8 +25,6 @@ const Blog = (props) => {
   const addLike = async () => {
     // make adjustments
 
-    console.log('function start', blog)
-
     const adjustment = {
       likes: blog.likes + 1,
       author: blog.author,
@@ -35,14 +33,14 @@ const Blog = (props) => {
       user: blog.user.id,
       id: blog.id
     }
-    console.log('adjustment: ', adjustment)
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const like = await blogService.addLike(adjustment)
       console.log('like added!')
     } catch (exception) {
-        console.log(exception)
-      }
+      console.log(exception)
+    }
   }
 
   return(
@@ -51,15 +49,15 @@ const Blog = (props) => {
       <button style={hideWhenVisible} onClick={toggleVisibility}>view</button>
       <button style={showWhenVisible} onClick={toggleVisibility}>hide</button>
       <div style={showWhenVisible}>
-          <div>{blog.url}</div>
-          <div>likes: {blog.likes} <button onClick={addLike}>Like</button></div>
-          <div>{blog.user.username}</div>
-          <DeleteButton
-            current={props.user}
-            blog={props.blog}
-          />
-        </div>
-    </div>  
+        <div>{blog.url}</div>
+        <div>likes: {blog.likes} <button onClick={addLike}>Like</button></div>
+        <div>{blog.user.username}</div>
+        <DeleteButton
+          current={props.user}
+          blog={props.blog}
+        />
+      </div>
+    </div>
   )
 }
 

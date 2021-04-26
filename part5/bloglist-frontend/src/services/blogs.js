@@ -17,7 +17,6 @@ const getAll = () => {
 
 const addPost = async newBlog => {
 
-  console.log(newBlog)
   const config = {
     headers: { Authorization: token },
   }
@@ -35,8 +34,7 @@ const addLike = async blog => {
 }
 
 const deleteBlog = async blog => {
-  
-  console.log(blog)
+
   const config = {
     headers: { Authorization: token },
   }
