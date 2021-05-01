@@ -15,7 +15,7 @@ const App = () => {
   const [notif, setNotif] = useState(null)
 
   const blogsSorted = blogs.sort((a, b) => {
-    return a.likes - b.likes
+    return b.likes - a.likes
   })
 
   useEffect(() => {
