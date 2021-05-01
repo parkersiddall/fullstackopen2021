@@ -53,7 +53,14 @@ const Blog = (props) => {
       <button style={showWhenVisible} onClick={toggleVisibility}>hide</button>
       <div style={showWhenVisible} className="toggleContent">
         <div>{blog.url}</div>
-        <div>likes: {likes} <button onClick={addLike}>Like</button></div>
+        <div>
+          likes:
+          <span className={'likeCount'}>{likes}</span>
+          <button
+            className={'likeBlogButton'}
+            onClick={addLike}>Like
+          </button>
+        </div>
         <div>{blog.user.username}</div>
         <DeleteButton
           current={props.user}

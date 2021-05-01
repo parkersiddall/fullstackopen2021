@@ -75,6 +75,8 @@ const App = () => {
       setTimeout(() => {
         setNotif(null)
       }, 5000)
+      addedBlog.user = user
+      console.log('ADDING BLOG', addedBlog)
       setBlogs(blogs.concat(addedBlog))
     } catch (exception) {
       setNotif(
@@ -93,15 +95,13 @@ const App = () => {
       <div>
         <Notification notification={notif}/>
         <h2>blogs</h2>
-        <Toggle buttonLabel='login'>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleLogin={handleLogin}
-          />
-        </Toggle>
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleLogin={handleLogin}
+        />
       </div>
     )
   }
