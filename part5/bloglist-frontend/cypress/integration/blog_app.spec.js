@@ -114,5 +114,22 @@ describe('Blog app', function() {
       cy.contains('this is a test').should('not.exist')
 
     })
+
+    it('blogs are ordered correctly', function () {
+      // like the post that was just created, it will have 1 like
+      cy.contains('view').click()
+      cy.get('.likeBlogButton').click()
+
+      // create a second post, it will have 0 likes
+      cy.get('#titleBlogForm').type('this is a second test')
+      cy.get('#authorBlogForm').type('miley cyrus')
+      cy.get('#urlBlogForm').type('https://www.uhhhwhat.com')
+      cy.get('#submitBlogForm').click()
+
+      // refresh the page, check that the blogs are ordered correctly
+      cy.visit('http://localhost:3000')
+      cy.get('.blog:first').contains('this is a test')
+      cy.get('.blog:last').contains('this is a second test')
+    })
   })
 })
