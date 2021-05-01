@@ -7,8 +7,10 @@ const Blog = (props) => {
   const [visible, setVisible] = useState(false)
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
+  const [likes, setLikes] = useState(props.blog.likes)
 
   const blog = props.blog
+  console.log(blog)
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -38,6 +40,7 @@ const Blog = (props) => {
       // eslint-disable-next-line no-unused-vars
       const like = await blogService.addLike(adjustment)
       console.log('like added!')
+      setLikes(blog.likes + 1)
     } catch (exception) {
       console.log(exception)
     }
@@ -50,11 +53,13 @@ const Blog = (props) => {
       <button style={showWhenVisible} onClick={toggleVisibility}>hide</button>
       <div style={showWhenVisible} className="toggleContent">
         <div>{blog.url}</div>
-        <div>likes: {blog.likes} <button onClick={addLike}>Like</button></div>
+        <div>likes: {likes} <button onClick={addLike}>Like</button></div>
         <div>{blog.user.username}</div>
         <DeleteButton
           current={props.user}
           blog={props.blog}
+          blogs={props.blogs}
+          setBlogs={props.setBlogs}
         />
       </div>
     </div>

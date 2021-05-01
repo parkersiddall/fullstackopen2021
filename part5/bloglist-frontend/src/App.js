@@ -66,7 +66,7 @@ const App = () => {
   const sendNewBlog = async (blogObject) => {
     try {
       // eslint-disable-next-line no-unused-vars
-      const user = await blogService.addPost(blogObject)
+      const addedBlog = await blogService.addPost(blogObject)
       setNotif(
         {
           message: 'Blog added successfully!',
@@ -75,6 +75,7 @@ const App = () => {
       setTimeout(() => {
         setNotif(null)
       }, 5000)
+      setBlogs(blogs.concat(addedBlog))
     } catch (exception) {
       setNotif(
         {
@@ -115,11 +116,17 @@ const App = () => {
       <Toggle buttonLabel='add blog'>
         <NewBlogForm
           sendNewBlog={sendNewBlog}
+          user={user}
         />
       </Toggle>
       <button onClick={handleLogout}>Logout</button>
       {blogsSorted.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user.username} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user.username}
+          blogs={blogs}
+          setBlogs={setBlogs} />
       )}
     </div>
 
