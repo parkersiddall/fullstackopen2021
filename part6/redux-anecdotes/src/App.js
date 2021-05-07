@@ -3,8 +3,16 @@ import { createStore } from 'redux'
 import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector((state) => {
+
+    const sorted = state.sort((a, b) => {
+      return b.votes - a.votes
+    })
+
+    return sorted
+  })
   const dispatch = useDispatch()
+
 
   const vote = (id) => {
     console.log('vote', id)
