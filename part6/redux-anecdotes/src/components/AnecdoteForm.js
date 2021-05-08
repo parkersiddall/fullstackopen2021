@@ -1,5 +1,6 @@
 import { prepareCreateAnecdote } from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { createMessage, clearMessage } from '../reducers/messageReducer'
 
 const AnecdoteForm = (props) => {
     const dispatch = useDispatch()
@@ -8,6 +9,12 @@ const AnecdoteForm = (props) => {
         event.preventDefault()
         const content = event.target.anecdoteInput.value
         event.target.anecdoteInput.value = ''
+
+        dispatch(createMessage('Anecdote added successfully!'))
+        setTimeout(() => {
+          dispatch(clearMessage())
+        }, 5000)
+  
         dispatch(prepareCreateAnecdote(content))
       }
 

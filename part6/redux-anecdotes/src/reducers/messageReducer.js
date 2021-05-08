@@ -1,5 +1,18 @@
-const messageAtStart = 'Welcome to the anecdotes app!'
+const messageAtStart = null
 
+export const createMessage = (message) => {
+    return {
+      type: 'SET_MESSAGE',
+      message,
+    }
+  }
+
+export const clearMessage = () => {
+    return {
+        type: 'SET_MESSAGE', 
+        message: null
+    }
+}
 
 const messageReducer = (state = messageAtStart, action) => {
     switch (action.type) {
@@ -10,12 +23,5 @@ const messageReducer = (state = messageAtStart, action) => {
             return state
     }
 }
-
-export const changeMessage = message => {
-    return {
-      type: 'SET_MESSAGE',
-      message,
-    }
-  }
   
 export default messageReducer

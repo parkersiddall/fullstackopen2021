@@ -18,7 +18,6 @@ const asObject = (anecdote) => {
 }
 
 export const prepareVote = (id) => {
-  console.log('vote', id)
   const vote = {
     type: 'vote',
     data: {
@@ -40,11 +39,18 @@ export const prepareCreateAnecdote = (content) => {
   return anecdoteDict
 }
 
+export const prepareFilterAnecdotes = (filter) => {
+  const anecdoteFilterDict = {
+    type: 'filter',
+    filter
+  }
+
+  return anecdoteFilterDict 
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
 
   switch(action.type) {
     case "vote":
@@ -63,6 +69,11 @@ const anecdoteReducer = (state = initialState, action) => {
       const anecdoteObject = asObject(action.data.content)
 
       return state.concat(anecdoteObject)
+
+    case "filter":
+        const filterString = action.filter
+        console.log("filter case in anecdote reducer", filterString)
+        return state
   }
   return state
 }
