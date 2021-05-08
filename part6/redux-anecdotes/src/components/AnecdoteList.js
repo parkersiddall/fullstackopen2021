@@ -5,7 +5,7 @@ const AnecdoteList = () => {
     
     const anecdotes = useSelector((state) => {
 
-        const sorted = state.sort((a, b) => {
+        const sorted = state.anecdotes.sort((a, b) => {
           return b.votes - a.votes
         })
     
