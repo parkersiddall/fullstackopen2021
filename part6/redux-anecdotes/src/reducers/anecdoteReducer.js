@@ -17,6 +17,29 @@ const asObject = (anecdote) => {
   }
 }
 
+export const prepareVote = (id) => {
+  console.log('vote', id)
+  const vote = {
+    type: 'vote',
+    data: {
+      id: id
+    }
+  }
+
+  return vote
+}
+
+export const prepareCreateAnecdote = (content) => {
+  const anecdoteDict = {
+    type: 'add',
+    data: {
+      content: content
+    }
+  }
+
+  return anecdoteDict
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
