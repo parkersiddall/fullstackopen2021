@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import anecdoteReducer from './reducers/anecdoteReducer'
+import anecdoteReducer, { initializeAnecdotes } from './reducers/anecdoteReducer'
 import messageReducer from './reducers/messageReducer'
 import filterReducer from './reducers/filterReducer'
 
