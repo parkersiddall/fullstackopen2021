@@ -14,14 +14,16 @@ const AnecdoteList = () => {
         })
 
         const dispatch = useDispatch()
-        const vote = (id) => {
+        const vote = (anecdote) => {
 
-        dispatch(createMessage('Vote added!'))
-        setTimeout(() => {
-            dispatch(clearMessage())
-        }, 5000)
+            dispatch(prepareVote(anecdote))
 
-        dispatch(prepareVote(id))
+            dispatch(createMessage('Vote added!'))
+            setTimeout(() => {
+                dispatch(clearMessage())
+            }, 5000)
+
+            
         }
 
         // filter anecdotes based on string in store
@@ -40,7 +42,7 @@ const AnecdoteList = () => {
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                        <button onClick={() => vote(anecdote)}>vote</button>
                     </div>
                     </div>
                 )}

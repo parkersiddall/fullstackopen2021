@@ -10,15 +10,16 @@ const asObject = (anecdote) => {
   }
 }
 
-export const prepareVote = (id) => {
-  const vote = {
-    type: 'vote',
-    data: {
-      id: id
-    }
+export const prepareVote = (anecdote) => {
+  return async dispatch => {
+    const addAVote = await anecdoteService.addVote(anecdote)
+    dispatch({
+      type: 'vote',
+      data: {
+        id: anecdote.id
+      }
+    })
   }
-
-  return vote
 }
 
 export const prepareCreateAnecdote = (content) => {
@@ -56,10 +57,11 @@ const anecdoteReducer = (state = [], action) => {
     case "vote":
       const id = action.data.id
       const anecdoteToChange = state.find(n => n.id === id)
-      const changedAnecdote = {
+      const changedAnecdote = anecdoteToChange // removing the following because it causes two votes to be cast, only one vote persisted
+/*       const changedAnecdote = {
         ...anecdoteToChange, 
         votes: anecdoteToChange.votes + 1
-      }
+      } */
 
       return state.map(anecdote => 
           anecdote.id !== id ? anecdote : changedAnecdote
