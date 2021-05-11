@@ -11,7 +11,6 @@ const AnecdoteForm = (props) => {
         const content = event.target.anecdoteInput.value
         event.target.anecdoteInput.value = ''
 
-        const newAnecdote = await anecdoteService.createNew(content)
         dispatch(prepareCreateAnecdote(content))
 
         dispatch(createMessage('Anecdote added successfully!'))

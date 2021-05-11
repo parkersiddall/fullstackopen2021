@@ -49,6 +49,11 @@
       "content": "test parker",
       "votes": 0,
       "id": "RlWeuLj"
+    },
+    {
+      "content": "test with redux-thunk",
+      "votes": 0,
+      "id": "UGJjUs3"
     }
   ]
 }

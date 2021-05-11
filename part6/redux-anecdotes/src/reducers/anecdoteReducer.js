@@ -22,14 +22,13 @@ export const prepareVote = (id) => {
 }
 
 export const prepareCreateAnecdote = (content) => {
-  const anecdoteDict = {
-    type: 'add',
-    data: {
-      content: content
-    }
+  return async dispatch => {
+    const anecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'add',
+      data: anecdote,
+    })
   }
-
-  return anecdoteDict
 }
 
 export const prepareFilterAnecdotes = (filter) => {
