@@ -1,18 +1,20 @@
 const messageAtStart = null
 
-export const createMessage = (message) => {
-    return {
-      type: 'SET_MESSAGE',
-      message,
+export const createMessage = (message, timeout) => {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_MESSAGE',
+            message
+        })
+
+        setTimeout(() => {
+            dispatch({
+                type: 'SET_MESSAGE', 
+                message: null
+            }) 
+        }, timeout)
     }
   }
-
-export const clearMessage = () => {
-    return {
-        type: 'SET_MESSAGE', 
-        message: null
-    }
-}
 
 const messageReducer = (state = messageAtStart, action) => {
     switch (action.type) {

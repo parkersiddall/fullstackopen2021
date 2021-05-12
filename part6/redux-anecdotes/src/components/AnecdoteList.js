@@ -1,6 +1,6 @@
-import anecdoteReducer, { prepareVote } from '../reducers/anecdoteReducer'
+import { prepareVote } from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { createMessage, clearMessage } from '../reducers/messageReducer'
+import { createMessage } from '../reducers/messageReducer'
 
 const AnecdoteList = () => {
     
@@ -11,43 +11,37 @@ const AnecdoteList = () => {
         })
 
         return sorted
-        })
+    })
 
-        const dispatch = useDispatch()
-        const vote = (anecdote) => {
+    const dispatch = useDispatch()
+    const vote = (anecdote) => {
 
-            dispatch(prepareVote(anecdote))
+        dispatch(prepareVote(anecdote))
+        dispatch(createMessage('Vote added!', 2000))
+        
+    }
 
-            dispatch(createMessage('Vote added!'))
-            setTimeout(() => {
-                dispatch(clearMessage())
-            }, 5000)
+    // filter anecdotes based on string in store
+    const filter = useSelector(state => state.filter)
+    const anecdotesFiltered = anecdotes.filter((anecdote) => {
+        return anecdote.content.toLowerCase().includes(filter.toLowerCase())
+    })
 
-            
-        }
-
-        // filter anecdotes based on string in store
-        const filter = useSelector(state => state.filter)
-        const anecdotesFiltered = anecdotes.filter((anecdote) => {
-            return anecdote.content.toLowerCase().includes(filter.toLowerCase())
-        })
-
-        console.log(anecdotesFiltered)
-        return(
-            <div>
-                {anecdotesFiltered.map(anecdote =>
-                    <div key={anecdote.id}>
-                    <div>
-                        {anecdote.content}
-                    </div>
-                    <div>
-                        has {anecdote.votes}
-                        <button onClick={() => vote(anecdote)}>vote</button>
-                    </div>
-                    </div>
-                )}
-            </div>
-        )
+    return(
+        <div>
+            {anecdotesFiltered.map(anecdote =>
+                <div key={anecdote.id}>
+                <div>
+                    {anecdote.content}
+                </div>
+                <div>
+                    has {anecdote.votes}
+                    <button onClick={() => vote(anecdote)}>vote</button>
+                </div>
+                </div>
+            )}
+        </div>
+    )
 }
 
 export default AnecdoteList
