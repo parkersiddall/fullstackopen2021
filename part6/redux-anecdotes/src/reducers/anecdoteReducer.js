@@ -68,7 +68,7 @@ const anecdoteReducer = (state = [], action) => {
         )
     
     case "add":
-      const anecdoteObject = asObject(action.data.content)
+      const anecdoteObject = action.data
 
       return state.concat(anecdoteObject)
 
