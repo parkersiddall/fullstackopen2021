@@ -1,13 +1,16 @@
 const messageAtStart = null
+var timeoutID = null
 
 export const createMessage = (message, timeout) => {
     return async dispatch => {
+        clearTimeout(timeoutID)
+
         dispatch({
             type: 'SET_MESSAGE',
             message
         })
 
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
             dispatch({
                 type: 'SET_MESSAGE', 
                 message: null
