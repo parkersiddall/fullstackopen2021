@@ -8,26 +8,25 @@ import NewBlogForm from './components/NewBlogForm'
 import Toggle from './components/Toggle'
 
 //new imports
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogsReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
+  // see if this can be moved into the init action...
   const blogsSorted = blogs.sort((a, b) => {
     return b.likes - a.likes
   })
-
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
-  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -67,32 +66,6 @@ const App = () => {
     setUser(null)
   }
 
-  const sendNewBlog = async (blogObject) => {
-    try {
-      // eslint-disable-next-line no-unused-vars
-      const addedBlog = await blogService.addPost(blogObject)
-      dispatch(createNotification(
-        {
-          message: 'Blog added successfully!',
-          style: 'successMessage'
-        },
-        5000)
-      )
-
-      addedBlog.user = user
-      console.log('ADDING BLOG', addedBlog)
-      setBlogs(blogs.concat(addedBlog))
-    } catch (exception) {
-      dispatch(createNotification(
-        {
-          message: `Error adding blog! ${exception}`,
-          style: 'errorMessage'
-        },
-        5000
-      ))
-    }
-  }
-
   if (user === null) {
     return (
       <div>
@@ -118,7 +91,6 @@ const App = () => {
       </b>
       <Toggle buttonLabel='add blog'>
         <NewBlogForm
-          sendNewBlog={sendNewBlog}
           user={user}
         />
       </Toggle>
@@ -128,8 +100,7 @@ const App = () => {
           key={blog.id}
           blog={blog}
           user={user.username}
-          blogs={blogs}
-          setBlogs={setBlogs} />
+          blogs={blogs}/>
       )}
     </div>
 

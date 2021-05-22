@@ -66,7 +66,6 @@ const Blog = (props) => {
           current={props.user}
           blog={props.blog}
           blogs={props.blogs}
-          setBlogs={props.setBlogs}
         />
       </div>
     </div>

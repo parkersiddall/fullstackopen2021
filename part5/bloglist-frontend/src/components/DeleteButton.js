@@ -19,7 +19,8 @@ const DeleteButton = (props) => {
         // eslint-disable-next-line no-unused-vars
         const deletedBlog = await blogService.deleteBlog(blog)
         console.log('blog deleted!')
-        props.setBlogs(props.blogs.filter(blogItem => blogItem.url !== blog.url && blogItem.title !== blog.title))
+        // props.setBlogs(props.blogs.filter(blogItem => blogItem.url !== blog.url && blogItem.title !== blog.title))
+        // replace with action in reducer
       } catch (exception) {
         console.log(exception)
       }
