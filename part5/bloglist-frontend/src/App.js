@@ -7,12 +7,17 @@ import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Toggle from './components/Toggle'
 
+//new imports
+import { useDispatch } from 'react-redux'
+import { createNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notif, setNotif] = useState(null)
+
+  const dispatch = useDispatch()
 
   const blogsSorted = blogs.sort((a, b) => {
     return b.likes - a.likes
@@ -46,14 +51,13 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setNotif(
+      dispatch(createNotification(
         {
           message: 'Login failed.',
           style: 'errorMessage'
-        })
-      setTimeout(() => {
-        setNotif(null)
-      }, 5000)
+        },
+        5000)
+      )
     }
   }
 
@@ -67,33 +71,32 @@ const App = () => {
     try {
       // eslint-disable-next-line no-unused-vars
       const addedBlog = await blogService.addPost(blogObject)
-      setNotif(
+      dispatch(createNotification(
         {
           message: 'Blog added successfully!',
           style: 'successMessage'
-        })
-      setTimeout(() => {
-        setNotif(null)
-      }, 5000)
+        },
+        5000)
+      )
+
       addedBlog.user = user
       console.log('ADDING BLOG', addedBlog)
       setBlogs(blogs.concat(addedBlog))
     } catch (exception) {
-      setNotif(
+      dispatch(createNotification(
         {
           message: `Error adding blog! ${exception}`,
           style: 'errorMessage'
-        })
-      setTimeout(() => {
-        setNotif(null)
-      }, 5000)
+        },
+        5000
+      ))
     }
   }
 
   if (user === null) {
     return (
       <div>
-        <Notification notification={notif}/>
+        <Notification/>
         <h2>blogs</h2>
         <LoginForm
           username={username}
@@ -108,7 +111,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification notification={notif}/>
+      <Notification/>
       <h2>blogs</h2>
       <b>
           You are logged in as {user.username}
