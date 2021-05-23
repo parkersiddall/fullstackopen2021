@@ -4,7 +4,7 @@ import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { createNotification } from '../reducers/notificationReducer'
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -19,7 +19,11 @@ const LoginForm = ({ setUser }) => {
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
-      setUser(user)
+      //setUser(user)
+      dispatch({
+        type: 'SET_USER',
+        data: user
+      })
       setUsername('')
       setPassword('')
     } catch (exception) {

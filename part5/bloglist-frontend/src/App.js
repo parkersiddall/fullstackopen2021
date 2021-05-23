@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
@@ -9,34 +8,33 @@ import Toggle from './components/Toggle'
 //new imports
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
+import { initializeUser } from './reducers/userReducer'
 
 const App = () => {
-  const [user, setUser] = useState(null)
-
+  const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [])
 
   // see if this can be moved into the init action...
   const blogsSorted = blogs.sort((a, b) => {
     return b.likes - a.likes
   })
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
   const handleLogout = () => {
     console.log('You are now logged out.')
     window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
+    dispatch({
+      type: 'SET_USER',
+      data: null
+    })
   }
 
   if (user === null) {
@@ -44,7 +42,7 @@ const App = () => {
       <div>
         <Notification/>
         <h2>blogs</h2>
-        <LoginForm setUser={setUser}/>
+        <LoginForm/>
       </div>
     )
   }
