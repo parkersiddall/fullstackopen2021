@@ -1,12 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { createNotification } from '../reducers/notificationReducer'
 
-const LoginForm = ({
-  handleLogin,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password
-}) => {
+const LoginForm = ({ setUser }) => {
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+
+    try {
+      const user = await loginService.login({ username, password })
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      dispatch(createNotification(
+        {
+          message: 'Login failed.',
+          style: 'errorMessage'
+        },
+        5000)
+      )
+    }
+  }
+
   return(
     <div>
       <h2>Login</h2>
@@ -18,7 +44,7 @@ const LoginForm = ({
             type='text'
             value={username}
             name='username'
-            onChange={handleUsernameChange}
+            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
@@ -28,7 +54,7 @@ const LoginForm = ({
             type='password'
             value={password}
             name='password'
-            onChange = {handlePasswordChange}
+            onChange = {({ target }) => setPassword(target.value)}
           />
         </div>
         <button id='login-button' type='submit'>Login</button>
