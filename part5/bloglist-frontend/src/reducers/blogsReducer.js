@@ -42,6 +42,23 @@ export const addBlog = (blog, user) => {
   }
 }
 
+export const deleteBlog = (blog) => {
+  return async dispatch => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const deletedBlog = await blogsService.deleteBlog(blog)
+      console.log('blog deleted!')
+      // props.setBlogs(props.blogs.filter(blogItem => blogItem.url !== blog.url && blogItem.title !== blog.title))
+      dispatch({
+        type: 'DELETE',
+        data: blog
+      })
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+}
+
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
   case 'INIT':
@@ -49,6 +66,9 @@ const blogsReducer = (state = [], action) => {
 
   case 'ADD':
     return state.concat(action.data)
+
+  case 'DELETE':
+    return state.filter(blogItem => blogItem.url !== action.data.url && blogItem.title !== action.data.title)
 
   default:
     return state

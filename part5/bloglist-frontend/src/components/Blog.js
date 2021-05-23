@@ -10,7 +10,6 @@ const Blog = (props) => {
   const [likes, setLikes] = useState(props.blog.likes)
 
   const blog = props.blog
-  console.log(blog)
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -65,7 +64,6 @@ const Blog = (props) => {
         <DeleteButton
           current={props.user}
           blog={props.blog}
-          blogs={props.blogs}
         />
       </div>
     </div>

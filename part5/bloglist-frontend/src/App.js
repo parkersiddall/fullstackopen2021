@@ -100,7 +100,7 @@ const App = () => {
           key={blog.id}
           blog={blog}
           user={user.username}
-          blogs={blogs}/>
+        />
       )}
     </div>
 
