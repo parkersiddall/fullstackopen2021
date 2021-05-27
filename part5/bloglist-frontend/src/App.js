@@ -4,8 +4,6 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Toggle from './components/Toggle'
-
-//new imports
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { initializeUser } from './reducers/userReducer'
@@ -16,6 +14,7 @@ import {
   Route
 } from 'react-router-dom'
 import Users from './components/Users'
+import User from './components/UserPage'
 import { initializeUsers } from './reducers/usersReducer'
 
 const App = () => {
@@ -68,6 +67,9 @@ const App = () => {
       <Router>
         <Navbar/>
         <Switch>
+          <Route path='/users/:id'>
+            <User />
+          </Route>
           <Route path='/users'>
             <h4>Users</h4>
             <Users/>
@@ -90,7 +92,6 @@ const App = () => {
         </Switch>
       </Router>
     </div>
-
   )
 }
 
