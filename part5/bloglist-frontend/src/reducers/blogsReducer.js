@@ -42,6 +42,33 @@ export const addBlog = (blog, user) => {
   }
 }
 
+export const addLike = (blog) => {
+  return async dispatch => {
+    const adjustment = {
+      likes: blog.likes + 1,
+      author: blog.author,
+      url: blog.url,
+      title: blog.title,
+      user: blog.user,
+      id: blog.id
+    }
+
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const like = await blogsService.addLike(adjustment)
+      console.log('like added!')
+      // setLikes(blog.likes + 1)
+      dispatch({
+        type: 'ADD_LIKE',
+        data: adjustment
+      })
+    } catch (exception) {
+      console.log(exception)
+    }
+
+  }
+}
+
 export const deleteBlog = (blog) => {
   return async dispatch => {
     try {
@@ -69,6 +96,14 @@ const blogsReducer = (state = [], action) => {
 
   case 'DELETE':
     return state.filter(blogItem => blogItem.url !== action.data.url && blogItem.title !== action.data.title)
+
+  case 'ADD_LIKE':
+
+    // pull out the old blog
+    // eslint-disable-next-line no-case-declarations
+    const filtered = state.filter(blogItem => blogItem.url !== action.data.url && blogItem.title !== action.data.title)
+
+    return filtered.concat(action.data)
 
   default:
     return state

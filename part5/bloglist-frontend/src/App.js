@@ -15,6 +15,7 @@ import {
 } from 'react-router-dom'
 import Users from './components/Users'
 import User from './components/UserPage'
+import BlogPage from './components/BlogPage'
 import { initializeUsers } from './reducers/usersReducer'
 
 const App = () => {
@@ -69,6 +70,9 @@ const App = () => {
         <Switch>
           <Route path='/users/:id'>
             <User />
+          </Route>
+          <Route path='/blogs/:id'>
+            <BlogPage />
           </Route>
           <Route path='/users'>
             <h4>Users</h4>
