@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
     dispatch(initializeUser())

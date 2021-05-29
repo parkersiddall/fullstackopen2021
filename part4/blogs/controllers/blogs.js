@@ -7,7 +7,7 @@ const middleware = require('../utils/middleware')
 
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user')
+  const blogs = await Blog.find({}).populate('user').populate('comments')
   response.json(blogs)
 })
 
@@ -92,10 +92,19 @@ blogsRouter.post('/:id/comments', middleware.extractToken, middleware.extractUse
   })
 
   const savedComment = await newComment.save()
-  // user.blogs = user.blogs.concat(savedBlog._id)
-  // await user.save()
+
+  // add comment to blogs comment list
+  const blogToModify = await Blog.findById(request.params.id)
+  console.log(blogToModify)
+  blogToModify.comments = blogToModify.comments.concat(savedComment)
+  await blogToModify.save()
 
   response.json(savedComment)
+})
+
+blogsRouter.get('/comments', async (request, response) => {
+  const comments = await Comment.find({}).populate('blog')
+  response.json(comments)
 })
 
 

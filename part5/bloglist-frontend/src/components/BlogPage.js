@@ -22,6 +22,18 @@ const BlogPage = () => {
         </button>
       </p>
       <p>posted by {blog.author}</p>
+      <h4>Comments:</h4>
+      { blog.comments.length > 0 &&
+            <ul>
+              {blog.comments.map(comment =>
+                <li key={comment.id}>{comment.comment}</li>)}
+            </ul>
+      }
+      {blog.comments.length === 0 &&
+        <p>No comments yet.</p>
+      }
+
+
     </div>
   )
 }

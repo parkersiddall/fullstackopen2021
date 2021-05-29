@@ -50,7 +50,8 @@ export const addLike = (blog) => {
       url: blog.url,
       title: blog.title,
       user: blog.user,
-      id: blog.id
+      id: blog.id,
+      comments: blog.comments
     }
 
     try {
