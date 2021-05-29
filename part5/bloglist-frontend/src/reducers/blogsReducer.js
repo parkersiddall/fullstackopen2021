@@ -66,7 +66,22 @@ export const addLike = (blog) => {
     } catch (exception) {
       console.log(exception)
     }
+  }
+}
 
+export const addComment = (comment, blogId) => {
+  return async dispatch => {
+    console.log(comment, blogId)
+    // use blogsService to send comment to backend
+    const commentDict = {
+      'comment': comment
+    }
+    const commentAdded = await blogsService.addComment(commentDict, blogId)
+    console.log(commentAdded)
+    dispatch({
+      type: 'ADD_COMMENT',
+      data: commentAdded
+    })
   }
 }
 
@@ -105,6 +120,19 @@ const blogsReducer = (state = [], action) => {
     const filtered = state.filter(blogItem => blogItem.url !== action.data.url && blogItem.title !== action.data.title)
 
     return filtered.concat(action.data)
+
+  case 'ADD_COMMENT':
+
+    // find the blog in the state
+    var blogToModify = state.find(blog => blog.id === action.data.blog)
+    console.log(blogToModify)
+
+    // add the new comment to the blogs comments list
+    blogToModify.comments = blogToModify.comments.concat(action.data)
+    console.log(blogToModify)
+
+    // filter the state to remove the old blog, then add in its place the modification
+    return state.filter(blog => blog.id !== action.data.blog).concat(blogToModify)
 
   default:
     return state

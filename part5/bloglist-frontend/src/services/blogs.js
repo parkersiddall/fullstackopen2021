@@ -47,4 +47,13 @@ const getComments = async blogId => {
   return request.data
 }
 
-export default { getAll, setToken, addPost, addLike, deleteBlog, getComments }
+const addComment = async (comment, blogId) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const request = await axios.post(baseUrl + `/${blogId}/comments`, comment, config)
+  return request.data
+}
+
+export default { getAll, setToken, addPost, addLike, deleteBlog, getComments, addComment }
