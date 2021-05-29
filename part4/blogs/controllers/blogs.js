@@ -2,6 +2,7 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 const middleware = require('../utils/middleware')
 
 
@@ -69,5 +70,33 @@ blogsRouter.put('/:id', middleware.extractToken, middleware.extractUser, async (
   const updateBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
   response.json(updateBlog)
 })
+
+blogsRouter.get('/:id/comments', async (request, response) => {
+  const comments = await Comment.find({blog: request.params.id}).populate('blog')
+  response.json(comments)
+})
+
+blogsRouter.post('/:id/comments', middleware.extractToken, middleware.extractUser, async (request, response) => {
+  const body = request.body
+  console.log(body)
+
+  if (body.comment === undefined) {
+    return response.status(400).json({ error: 'comment is mandatory' })
+  }
+
+  const user = request.user
+
+  const newComment = new Comment({
+    comment: body.comment,
+    blog: request.params.id
+  })
+
+  const savedComment = await newComment.save()
+  // user.blogs = user.blogs.concat(savedBlog._id)
+  // await user.save()
+
+  response.json(savedComment)
+})
+
 
 module.exports = blogsRouter
