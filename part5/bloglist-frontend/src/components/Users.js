@@ -1,32 +1,47 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+//import useStyles from '../styles'
+
+// Material UI
+import {
+  Avatar,
+  Container,
+  Card,
+  CardActionArea,
+  CardContent,
+  Grid,
+  Typography
+} from '@material-ui/core'
 
 const Users = () => {
   // init users, save them in redux state
   const users = useSelector(state => state.users)
-  console.log(users)
+  //const classes = useStyles()
 
   return(
-    <div>
-      <table>
-        <tr>
-          <th>Username</th>
-          <th>Blogs Created</th>
-        </tr>
+    <Container>
+      <Grid container spacing={3}>
         {users.map(user =>
-          <tr key={user.id}>
-            <td><Link to={`/users/${user.id}`}>{user.username}</Link></td>
-            <td>{user.blogs.length}</td>
-          </tr>
+          <Grid item key={user.id} xs={12} sm={6} md={3} align='center'>
+            <Card>
+              <CardActionArea component={Link} to={`/users/${user.id}`}>
+                <CardContent>
+                  <Avatar>{user.username[0]}</Avatar>
+                  <Typography variant={'h5'}>
+                    {user.username}
+                  </Typography>
+                  <Typography variant={'body1'}>
+                    {user.blogs.length} blogs posted
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
         )}
-      </table>
-
-    </div>
-
+      </Grid>
+    </Container>
   )
-  // users are successfully pulled and saved to state
-  // TODO: get them to show up on the list
 }
 
 export default Users

@@ -13,6 +13,7 @@ import Users from './components/Users'
 import User from './components/UserPage'
 import BlogPage from './components/BlogPage'
 import { initializeUsers } from './reducers/usersReducer'
+import useStyles from './styles'
 
 // Material UI
 import {
@@ -31,6 +32,7 @@ const App = () => {
   const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -59,7 +61,7 @@ const App = () => {
     <div>
       <CssBaseline/>
       <Navbar/>
-      <Container>
+      <Container className={classes.topMargin}>
         <Notification/>
         <Switch>
           <Route path='/users/:id'>
@@ -69,13 +71,13 @@ const App = () => {
             <BlogPage />
           </Route>
           <Route path='/users'>
-            <Typography variant="h4" align="center">
+            <Typography variant="h4" align="center" gutterBottom={true}>
               Users
             </Typography>
             <Users/>
           </Route>
           <Route path='/'>
-            <Typography variant="h4" align="center">
+            <Typography variant="h4" align="center" gutterBottom={true}>
               Recent Blogs
             </Typography>
             <Toggle buttonLabel='add blog'>

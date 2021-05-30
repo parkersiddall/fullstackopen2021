@@ -43,7 +43,7 @@ const Navbar = () => {
   return(
     <div>
       <div className={classes.root}>
-        <AppBar position="relative">
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />

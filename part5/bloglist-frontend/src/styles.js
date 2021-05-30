@@ -22,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)'
+  },
+  topMargin: {
+    marginTop: '75px'
+  },
+  centeredCard: {
+    textAlign: 'center'
   }
 }))
 
