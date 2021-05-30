@@ -14,6 +14,19 @@ import User from './components/UserPage'
 import BlogPage from './components/BlogPage'
 import { initializeUsers } from './reducers/usersReducer'
 
+// Material UI
+import {
+  Container,
+  CssBaseline,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Typography,
+  Paper
+} from '@material-ui/core'
+
 const App = () => {
   const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
@@ -37,8 +50,6 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <Notification/>
-        <h2>blogs</h2>
         <LoginForm/>
       </div>
     )
@@ -46,38 +57,51 @@ const App = () => {
 
   return (
     <div>
+      <CssBaseline/>
       <Navbar/>
-      <Notification/>
-      <h2>blogs</h2>
-
-      <Switch>
-        <Route path='/users/:id'>
-          <User />
-        </Route>
-        <Route path='/blogs/:id'>
-          <BlogPage />
-        </Route>
-        <Route path='/users'>
-          <h4>Users</h4>
-          <Users/>
-        </Route>
-        <Route path='/'>
-          <h4>Recent Blogs</h4>
-          <Toggle buttonLabel='add blog'>
-            <NewBlogForm
-              user={user}
-            />
-          </Toggle>
-          {blogsSorted.map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user.username}
-            />
-          )}
-        </Route>
-      </Switch>
-
+      <Container>
+        <Notification/>
+        <Switch>
+          <Route path='/users/:id'>
+            <User />
+          </Route>
+          <Route path='/blogs/:id'>
+            <BlogPage />
+          </Route>
+          <Route path='/users'>
+            <Typography variant="h4" align="center">
+              Users
+            </Typography>
+            <Users/>
+          </Route>
+          <Route path='/'>
+            <Typography variant="h4" align="center">
+              Recent Blogs
+            </Typography>
+            <Toggle buttonLabel='add blog'>
+              <NewBlogForm
+                user={user}
+              />
+            </Toggle>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableBody>
+                  {blogsSorted.map(blog =>
+                    <TableRow key={blog.id} hover={true}>
+                      <TableCell align={'left'}>
+                        <Blog blog={blog}/>
+                      </TableCell>
+                      <TableCell>
+                        {user.username}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Route>
+        </Switch>
+      </Container>
     </div>
   )
 }

@@ -3,12 +3,24 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { createNotification } from '../reducers/notificationReducer'
+import Notification from './Notification'
+
+// Material UI
+import {
+  Container,
+  TextField,
+  Button,
+  Box,
+  Typography
+} from '@material-ui/core'
+import useStyles from '../styles'
 
 const LoginForm = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -39,30 +51,44 @@ const LoginForm = () => {
 
   return(
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-                username
-          <input
-            id='username'
-            type='text'
-            value={username}
-            name='username'
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-                password
-          <input
-            id='password'
-            type='password'
-            value={password}
-            name='password'
-            onChange = {({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button id='login-button' type='submit'>Login</button>
-      </form>
+      <Container align={'center'}>
+        <Notification/>
+        <Typography variant={'h1'}>
+          Blogs
+        </Typography>
+        <Container className={classes.loginForm}>
+          <Typography variant={'h5'}>
+            Login
+          </Typography>
+          <form onSubmit={handleLogin}>
+            <div>
+              <TextField
+                label={'Username'}
+                id={'username'}
+                type={'text'}
+                value={username}
+                name={'username'}
+                onChange={({ target }) => setUsername(target.value)}
+              />
+            </div>
+            <div>
+              <TextField
+                label={'Password'}
+                id={'password'}
+                type={'password'}
+                value={password}
+                name={'password'}
+                onChange = {({ target }) => setPassword(target.value)}
+              />
+            </div>
+            <Box mt={3}>
+              <Button id='login-button' variant="contained" color="primary" type="submit">
+                Login
+              </Button>
+            </Box>
+          </form>
+        </Container>
+      </Container>
     </div>
   )
 }

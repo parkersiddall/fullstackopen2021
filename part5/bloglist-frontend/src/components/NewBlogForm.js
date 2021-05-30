@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addBlog } from '../reducers/blogsReducer'
+import useStyles from '../styles'
+
+// Material UI
+import {
+  Button,
+  TextField
+} from '@material-ui/core'
 
 const NewBlogForm = ({ user }) => {
 
@@ -9,6 +16,8 @@ const NewBlogForm = ({ user }) => {
   const [url, setUrl] = useState('')
 
   const dispatch = useDispatch()
+
+  const classes = useStyles()
 
   const submitNewPost = async (event) => {
     event.preventDefault()
@@ -29,30 +38,29 @@ const NewBlogForm = ({ user }) => {
 
   return(
     <div>
-      <form onSubmit={submitNewPost}>
+      <form onSubmit={submitNewPost} className={classes.root}>
         <div>
-          title
-          <input
+          <TextField
+            label='Title'
+            variant="outlined"
             id='titleBlogForm'
             type='text'
             value={title}
             name='title'
             onChange={({ target }) => setTitle(target.value)}
           />
-        </div>
-        <div>
-          author
-          <input
+          <TextField
+            label='Author'
+            variant='outlined'
             id='authorBlogForm'
             type='text'
             value={author}
             name='author'
             onChange = {({ target }) => setAuthor(target.value)}
           />
-        </div>
-        <div>
-          url
-          <input
+          <TextField
+            label='URL'
+            variant='outlined'
             id='urlBlogForm'
             type='url'
             value={url}
@@ -60,7 +68,7 @@ const NewBlogForm = ({ user }) => {
             onChange = {({ target }) => setUrl(target.value)}
           />
         </div>
-        <button id='submitBlogForm' type='submit'>submit</button>
+        <Button id='submitBlogForm' type='submit'>Submit</Button>
       </form>
     </div>
   )
